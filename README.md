@@ -1,248 +1,136 @@
-# 🚀 AI Text Intelligence API
+# AI Text Intelligence API
 
-A production-style NLP backend built using **FastAPI** and **Hugging Face Transformers**, capable of performing multiple text intelligence tasks such as summarization, sentiment analysis, zero-shot classification, and question answering.
+A modular FastAPI backend for common NLP inference tasks using Hugging Face Transformers.
 
----
+## What It Does
 
-## 🧠 Features
+The API exposes multiple text-intelligence capabilities behind REST endpoints:
 
-- 📝 **Text Summarization**
-- 😊 **Sentiment Analysis**
-- 🧠 **Zero-Shot Classification**
-- 🤖 **Question Answering (QA)**
-- 🔐 **API Key Authentication**
-- ⚡ **Modular & Scalable Architecture**
+- Text summarization
+- Sentiment analysis
+- Zero-shot classification
+- Extractive question answering
+- API-key authentication
+- Health checking
 
----
+## Architecture
 
-## 🏗️ Tech Stack
-
-- **Backend:** FastAPI
-- **ML Models:** Hugging Face Transformers
-- **Language:** Python 3.11
-- **Validation:** Pydantic
-- **Auth:** API Key-based authentication
-
----
-
-## 📁 Project Structure
-
+```text
+Client Request
+      ↓
+FastAPI Router
+      ↓
+Request Validation
+      ↓
+NLP Service
+      ↓
+Hugging Face Transformer Pipeline
+      ↓
+Structured JSON Response
 ```
 
-ai-text-intelligence/
-│
+## Tech Stack
+
+| Component | Technology |
+|---|---|
+| Language | Python 3.11 |
+| API | FastAPI |
+| NLP models | Hugging Face Transformers |
+| Validation | Pydantic |
+| Authentication | API key |
+| Server | Uvicorn |
+| Containerization | Docker |
+
+## API Endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /summarize` | Summarize input text |
+| `POST /sentiment` | Analyze sentiment |
+| `POST /classify` | Zero-shot classification |
+| `POST /qa` | Question answering |
+| `GET /health` | Health check |
+
+All inference endpoints require the configured API key.
+
+## Project Structure
+
+```text
+ai-text-intelligent-api/
 ├── app/
 │   ├── main.py
 │   ├── api/
-│   │   └── routes.py
 │   ├── services/
-│   │   ├── model_loader.py
-│   │   ├── summarizer.py
-│   │   ├── sentiment.py
-│   │   ├── classifier.py
-│   │   └── qa.py
 │   ├── schemas/
-│   │   ├── request.py
-│   │   └── response.py
 │   └── utils/
-│       └── auth.py
-│
 ├── requirements.txt
-├── .env
 ├── Dockerfile
+├── .env
 └── README.md
+```
 
-````
-
----
-
-## ⚙️ Setup Instructions
-
-### 1️⃣ Clone Repository
-
-```bash
-git clone https://github.com/SubhamDey2004-coder/ai-text-intelligent-api
-cd ai-text-intelligence
-````
-
----
-
-### 2️⃣ Create Virtual Environment
+## Run Locally
 
 ```bash
 python -m venv venv
-venv\Scripts\activate   # Windows
 ```
 
----
+Windows:
 
-### 3️⃣ Install Dependencies
+```powershell
+venv\Scripts\activate
+```
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-### 4️⃣ Add Environment Variables
-
-Create a `.env` file:
+Configure the API key in the environment:
 
 ```env
 API_KEY=your_secret_key
 ```
 
----
-
-### 5️⃣ Run Server
+Start the server:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
----
+Open the interactive API documentation at:
 
-### 6️⃣ Open API Docs
-
-```
+```text
 http://127.0.0.1:8000/docs
 ```
 
----
+## Example Request
 
-## 🔐 Authentication
-
-All endpoints (except `/health`) require an API key.
-
-### Header:
-
-```
-x-api-key: your_secret_key
-```
-
----
-
-## 📡 API Endpoints
-
-### 📝 Summarization
-
-```
-POST /summarize
-```
-
-**Request:**
+### Zero-shot classification
 
 ```json
 {
-  "text": "Your long text..."
+  "text": "The new model improves inference latency.",
+  "labels": ["technology", "sports", "finance"]
 }
 ```
 
----
+## Engineering Notes
 
-### 😊 Sentiment Analysis
+Transformer models can require substantial memory and the first request may be slower because model weights need to be loaded.
 
-```
-POST /sentiment
-```
+The project is intentionally structured around reusable model services rather than putting all inference logic inside a single API route.
 
----
+## Future Improvements
 
-### 🧠 Zero-Shot Classification
+- Model caching and optimized loading
+- Rate limiting
+- More robust authentication
+- Docker deployment optimization
+- Monitoring and inference metrics
+- Production deployment
 
-```
-POST /classify
-```
-
-**Request:**
-
-```json
-{
-  "text": "Text to classify",
-  "labels": ["technology", "sports", "politics"]
-}
-```
-
----
-
-### 🤖 Question Answering
-
-```
-POST /qa
-```
-
-**Request:**
-
-```json
-{
-  "context": "Some paragraph...",
-  "question": "Your question?"
-}
-```
-
----
-
-## ⚠️ Limitations
-
-* Large transformer models require significant memory (~2GB+)
-* Not suitable for free-tier deployment (e.g., Render free plan)
-* First request may be slow due to model loading
-
----
-
-## 🚀 Future Improvements
-
-* Docker optimization with model caching
-* Deployment on scalable infrastructure (AWS/GCP)
-* Rate limiting & advanced authentication (JWT)
-* Frontend interface (Streamlit / React)
-
----
-
-## 🧠 Key Learnings
-
-* Real-world usage of Hugging Face pipelines
-* Building modular FastAPI services
-* Handling model loading efficiently
-* Managing deployment constraints for ML systems
-
----
-
-## 👨‍💻 Author
+## Author
 
 **Subham Dey**
-
----
-
-## ⭐ Final Note
-
-This project demonstrates how to build a **multi-functional AI backend system**, going beyond basic tutorials into a more realistic, production-style architecture.
-
-```
-
----
-
-# 🧠 What you just did
-
-You didn’t just “add a README”
-
-You:
-- explained architecture  
-- showed maturity  
-- made it recruiter-friendly  
-- made your project understandable  
-
----
-
-# 🧘‍♂️ Final reality
-
-Most projects die like:
-> “code exists, explanation missing”
-
-Yours now says:
-> “this person knows what they built”
-
----
-
-That’s a strong finish. Not flashy. Just solid.
-```
